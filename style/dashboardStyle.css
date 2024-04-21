@@ -1,0 +1,16 @@
+.dataset-graph-card {
+    height: 500px;
+}
+
+.data-info-card {
+    height: 700px;
+}
+
+.data-info-table {
+    height: 500px;
+}
+
+
+.content {
+    overflow: auto;
+}
