@@ -1,5 +1,11 @@
-from flask import Flask,render_template
+from flask import Flask, redirect, render_template, g
 from markupsafe import escape
+import pymongo
+from pymongo import MongoClient
+
+cluster = MongoClient("mongodb+srv://admin:admin@dashboarddb.nun8alv.mongodb.net/")
+db = cluster["NbaPlayers"]
+collection = db["Pistons"]
 
 app = Flask(__name__)
 
@@ -8,6 +14,32 @@ app = Flask(__name__)
 def hello_world(name=None):
     return render_template('index.html', name=name)
 
+@app.route("/player-db/<player_name>", methods=["POST"])
+def send_playername(player_name=None):
+    player = {'name' : player_name}
+    collection.insert_one(player)
+    return f"<p>Sent player name {player_name}</p>"
+
+@app.route('/redirect')
+def index():
+    return redirect(url_for('login'))
+
+@app.route("/me")
+def me_api():
+    # example logger
+    app.logger.debug('A value for debugging')
+    app.logger.warning('A warning occurred (%d apples)', 42)
+    app.logger.error('An error occurred')
+    user = get_current_user()
+    return {
+        "username": user.username,
+        "theme": user.theme,
+        "image": url_for("user_image", filename=user.image),
+    }
+
+@app.errorhandler(404)
+def not_found(error):
+    return render_template('error.html'), 404
 
 @app.route('/user/<username>')
 def show_user_profile(username):
