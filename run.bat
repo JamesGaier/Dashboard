@@ -1,1 +1,1 @@
-python -m flask --app .\flaskr\hello run
+python -m flask --app .\flaskr\hello run --debug
