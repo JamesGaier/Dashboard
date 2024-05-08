@@ -1,0 +1,3 @@
+[submodule "flaskr/nba_api"]
+	path = flaskr/nba_api
+	url = https://github.com/swar/nba_api.git
