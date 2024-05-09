@@ -2,11 +2,9 @@ from flask import Flask, redirect, render_template, g
 from markupsafe import escape
 import pymongo
 from pymongo import MongoClient
-
-cluster = MongoClient("mongodb+srv://admin:admin@dashboarddb.nun8alv.mongodb.net/")
-db = cluster["NbaPlayers"]
-collection = db["Pistons"]
-
+from data import players, player_index_first_name
+import requests
+import shutil
 app = Flask(__name__)
 
 @app.route("/")
@@ -65,3 +63,23 @@ def login():
         return 'POST REQUEST CALLED'
     else:
         return 'GET REQUESET CALLED'
+
+
+class HTTPRequest:
+    def get(self, endpoint):   
+        response = requests.get(endpoint)
+        return response
+
+@app.route('/player/<name>', methods=['GET'])
+def get_player(name):
+    player_id = 0
+    for player in players:
+        if player[player_index_first_name].lower() == name:
+            player_id = player[0]
+    
+    url = f'https://cdn.nba.com/headshots/nba/latest/1040x760/{player_id}.png'
+    response = requests.get(url, stream=True)
+    with open(f'flaskr/static/{player_id}.png', 'wb') as out_file:
+        shutil.copyfileobj(response.raw, out_file)
+    
+    return 'OK'
