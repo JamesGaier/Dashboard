@@ -5,7 +5,7 @@ from pymongo import MongoClient
 from data import players, player_index_first_name
 import requests
 import shutil
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 
 @app.route("/")
 @app.route("/player-name/<name>")
