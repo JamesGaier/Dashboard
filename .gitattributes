@@ -1,0 +1,2 @@
+flaskr/static/css/ filter=lfs diff=lfs merge=lfs -text
+flaskr/static/webfonts/ filter=lfs diff=lfs merge=lfs -text
