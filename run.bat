@@ -1,1 +1,1 @@
-python -m flask --app .\flaskr\hello run --debug
+python -m flask --app .\flaskr\index run --debug
