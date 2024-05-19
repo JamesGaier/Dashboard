@@ -1,11 +1,11 @@
-from flask import Flask, redirect, render_template, g
+from flask import Flask, redirect, render_template, g, url_for
 from markupsafe import escape
 import pymongo
 from pymongo import MongoClient
 from data import players, player_index_first_name
 import requests
 import shutil
-app = Flask(__name__, static_url_path='/static')
+app = Flask(__name__)
 
 @app.route("/")
 @app.route("/player-name/<name>")
@@ -34,10 +34,6 @@ def me_api():
         "theme": user.theme,
         "image": url_for("user_image", filename=user.image),
     }
-
-@app.errorhandler(404)
-def not_found(error):
-    return render_template('error.html'), 404
 
 @app.route('/user/<username>')
 def show_user_profile(username):
@@ -83,3 +79,7 @@ def get_player(name):
         shutil.copyfileobj(response.raw, out_file)
     
     return 'OK'
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
